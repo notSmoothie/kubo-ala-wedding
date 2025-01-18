@@ -7,21 +7,25 @@ const emit = defineEmits(['updateActiveSection'])
 
 const formData = reactive({
   name: '',
-  attendance: '',
+  attendance: null,
   email: '',
-  accommodation: '',
-  nights: '',
-  transport: {
-    arrival: false,
-    departure: false
-  },
-  allergy: '',
+  accommodation: 0,
+  transport: 0,
+  foodAllergies: '',
   alcoholPreference: 'none'
 })
 
 onMounted(() => {
   emit('updateActiveSection', 'rsvp')
 })
+
+const handleTransport = (value) => {
+  if (value === 0) {
+    formData.transport = 0
+  } else {
+    formData.transport ^= 1 << (value - 1)
+  }
+}
 
 const handleSubmit = async () => {
   try {
@@ -38,128 +42,254 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="form-container">
-    {{ formData }}
-
-    <h1>Potvrdenie účasti</h1>
-    <p>
-      DORAZÍTE? DAJTE NÁM VEDIEŤ! Budeme vďační, ak vyplníte krátku zpetnú väzbu a pomôžete nám tak
-      s plánovaním celého dňa. Prosíme o vyplnenie za každého hosťa samostatne. Pokiaľ zakliknete
-      neúčasť, nie je potreba vyplňovať dalšie odpovede.
-    </p>
-
-    <form @submit.prevent="handleSubmit">
-      <!-- Name Input -->
-      <label for="name">Meno</label>
-      <input
-        v-model="formData.name"
-        type="text"
-        id="name"
-        placeholder="Zadajte svoje meno"
-        required
-      />
-
-      <!-- Attendance Option -->
-      <label>Rád sa zúčastním.</label>
-      <input v-model="formData.attendance" type="radio" value="attending" id="attending" required />
-      <label for="attending">Veľmi ma to mrzí, ale nedorazím</label>
-      <input
-        v-model="formData.attendance"
-        type="radio"
-        value="not-attending"
-        id="not-attending"
-        required
-      />
-
-      <!-- Email Input -->
-      <label for="email">Email pre novinky:</label>
-      <input v-model="formData.email" type="email" id="email" placeholder="Zadajte svoj email" />
-
-      <!-- Accommodation -->
-      <label>Ubytovanie:</label>
-      <label for="pension">Rád by som sa ubytoval v penzióne.</label>
-      <input v-model="formData.accommodation" type="radio" id="pension" value="pension" />
-
-      <!-- Nights Selection -->
-      <div v-if="formData.accommodation === 'pension'">
-        <label>Koľko nocí?</label>
-        <label for="one-night">1 (sobota)</label>
-        <input v-model="formData.nights" type="radio" value="1" id="one-night" />
-        <label for="two-nights">2 (piatok aj sobota)</label>
-        <input v-model="formData.nights" type="radio" value="2" id="two-nights" />
+  <div class="container">
+    <div class="form-container">
+      <div style="font-size: 2rem; margin-bottom: 10px">Dorazíte? Dajte nám vedieť!</div>
+      <div class="infotext-wrap">
+        <p>
+          Budeme vďační, ak vyplníte krátku spätnú väzbu a pomôžete nám tak s plánovaním celého dňa.
+          Prosíme o vyplnenie za každého hosťa samostatne.
+        </p>
       </div>
+      <form @submit.prevent="handleSubmit">
+        <div class="form-group row">
+          <div class="col">
+            <label for="name">Meno</label>
+            <input
+              v-model="formData.name"
+              type="text"
+              id="name"
+              placeholder="Zadajte svoje meno"
+              required
+            />
+          </div>
+          <div class="col">
+            <label for="email">Email pre novinky:</label>
+            <input
+              v-model="formData.email"
+              type="email"
+              id="email"
+              placeholder="Zadajte svoj email"
+            />
+          </div>
+        </div>
+        <!-- Attendance Section -->
+        <div class="form-group attendance-section">
+          <label for="attendance">Účasť:</label>
+          <div class="button-group">
+            <button
+              type="button"
+              :class="{ active: formData.attendance === true }"
+              @click="formData.attendance = true"
+              required
+            >
+              Áno, rád sa zúčastním
+            </button>
+            <button
+              type="button"
+              :class="{ active: formData.attendance === false }"
+              @click="formData.attendance = false"
+              required
+            >
+              Nie, nebudem sa môcť zúčastniť
+            </button>
+          </div>
+        </div>
 
-      <label for="no-accommodation">Ubytovanie nepotrebujem.</label>
-      <input
-        v-model="formData.accommodation"
-        type="radio"
-        value="no-accommodation"
-        id="no-accommodation"
-      />
-
-      <!-- Transportation -->
-      <label>Doprava:</label>
-      <label for="arrival">Rád by som sa nechal doviesť na svadbu.</label>
-      <input v-model="formData.transport.arrival" type="checkbox" id="arrival" />
-      <label for="departure">Rád by som sa nechal odviesť zo svadby.</label>
-      <input v-model="formData.transport.departure" type="checkbox" id="departure" />
-      <label for="self-transport">Dopravu si zabezpečím.</label>
-      <input v-model="formData.transport" type="checkbox" id="self-transport" />
-
-      <!-- Allergy Input -->
-      <label for="allergy">Alergia na jedlo:</label>
-      <textarea
-        v-model="formData.allergy"
-        id="allergy"
-        placeholder="Napíšte, ak máte nejaké alergie."
-      />
-
-      <!-- Alcohol Preference -->
-      <label for="alcohol-preference">Preferencia alkoholu:</label>
-      <select v-model="formData.alcoholPreference" id="alcohol-preference">
-        <option value="none">Žiadne</option>
-        <option value="beer">Pivo</option>
-        <option value="wine">Víno</option>
-        <option value="spirits">Špirálové nápoje</option>
-      </select>
-
-      <!-- Submit Button -->
-      <button type="submit">ODOSLAŤ</button>
-    </form>
+        <!-- Show the rest of the form only if attending -->
+        <div v-if="formData.attendance === true">
+          <!-- Accommodation Section -->
+          <div class="form-group row">
+            <div class="col">
+              <label>Ubytovanie:</label>
+              <div class="button-group">
+                <button
+                  type="button"
+                  :class="{ active: formData.accommodation === 0 }"
+                  @click="formData.accommodation = 0"
+                >
+                  Bez ubytovania
+                </button>
+                <button
+                  type="button"
+                  :class="{ active: formData.accommodation === 1 }"
+                  @click="formData.accommodation = 1"
+                >
+                  1 noc (piatok)
+                </button>
+                <button
+                  type="button"
+                  :class="{ active: formData.accommodation === 2 }"
+                  @click="formData.accommodation = 2"
+                >
+                  2 noci (piatok aj sobota)
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Transportation Section -->
+          <div class="form-group">
+            <label>Doprava:</label>
+            <div class="button-group">
+              <button
+                type="button"
+                :class="{ active: formData.transport === 0 }"
+                @click="handleTransport(0)"
+              >
+                Vlastná doprava
+              </button>
+              <button
+                type="button"
+                :class="{
+                  active: formData.transport === 1 || formData.transport === 3
+                }"
+                @click="handleTransport(1)"
+              >
+                Potrebujem doviezť na svadbu
+              </button>
+              <button
+                type="button"
+                :class="{
+                  active: formData.transport === 2 || formData.transport === 3
+                }"
+                @click="handleTransport(2)"
+              >
+                Potrebujem odviezť zo svadby
+              </button>
+            </div>
+          </div>
+          <!-- Allergy & Alcohol Sections -->
+          <div class="form-group row">
+            <div class="col">
+              <label for="allergy">Jedlo:</label>
+              <textarea
+                v-model="formData.allergy"
+                id="allergy"
+                placeholder="Napíšte, ak máte nejaké alergie alebo preferenice."
+              />
+            </div>
+            <div class="col">
+              <label for="alcohol-preference">Alkohol:</label>
+              <select v-model="formData.alcoholPreference" id="alcohol-preference">
+                <option value="none">Žiadne</option>
+                <option value="beer">Pivo</option>
+                <option value="wine">Víno</option>
+                <option value="spirits">Liehoviny</option>
+              </select>
+            </div>
+          </div>
+          <!-- Submit Button -->
+          <button type="submit" class="submit-button">ODOSLAŤ</button>
+        </div>
+        <div v-else-if="formData.attendance === false">
+          <button type="submit" class="submit-button small">ODOSLAŤ</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .form-container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 100vw;
   padding: 40px;
-  font-family: 'Roboto', sans-serif;
-  background-color: #f9f9f9;
+  background-color: #f4f4f9d6;
+  justify-items: center;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  min-width: 45vw;
+}
+
+.infotext-wrap {
+  max-width: 700px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-y: scroll;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Adds space between the columns */
+}
+
+.col {
+  flex: 1;
+  min-width: 45%; /* Ensures fields stay side by side */
 }
 
 h1 {
   text-align: center;
   color: #2c3e50;
   margin-bottom: 30px;
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
 p {
-  text-align: center;
-  color: #7f8c8d;
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.attendance-section {
+  margin-bottom: 30px;
+}
+
+.button-group {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button.small {
+  max-width: 50%;
+}
+
+button {
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #2c3e50;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+button.active {
+  border: 1px solid #e0b0ff;
+  background-color: #d697ff;
+  color: white;
+}
+
+button:hover {
+  background-color: #d697ff;
+  color: white;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 label {
   display: block;
-  margin-top: 20px;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #2c3e50;
 }
 
@@ -167,7 +297,7 @@ input,
 select,
 textarea {
   width: 100%;
-  padding: 12px;
+  padding: 12px 5px;
   margin-top: 10px;
   margin-bottom: 20px;
   border-radius: 8px;
@@ -181,23 +311,25 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #3498db;
+  border-color: #d697ff;
   box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
 }
 
-input[type='radio'],
-input[type='checkbox'] {
-  width: auto;
-  margin-right: 10px;
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: #d697ff;
+  outline: none;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
 }
 
 textarea {
   resize: vertical;
-  height: 150px;
+  height: 70px;
 }
 
-button {
-  background-color: #3498db;
+button[type='submit'] {
+  background-color: #d697ff;
   color: white;
   padding: 15px 20px;
   border: none;
@@ -211,64 +343,22 @@ button {
   margin-top: 20px;
 }
 
-button:hover {
-  background-color: #2980b9;
+button[type='submit']:hover {
+  background-color: #d697ffbb;
   transform: translateY(-2px);
 }
 
-button:active {
+button[type='submit']:active {
   transform: translateY(0);
 }
 
-input[type='radio']:checked,
-input[type='checkbox']:checked {
-  background-color: #3498db;
-  border-color: #3498db;
-}
-
-input[type='radio']:focus,
-input[type='checkbox']:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
-}
-
-select {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-}
-
-select:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
-}
-
-@media (max-width: 600px) {
-  .form-container {
-    padding: 20px;
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
   }
 
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  p {
-    font-size: 0.9rem;
-  }
-
-  label,
-  button {
-    font-size: 1rem;
-  }
-
-  input,
-  select,
-  textarea {
-    font-size: 1rem;
+  .col {
+    min-width: 100%;
   }
 }
 </style>

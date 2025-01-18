@@ -132,8 +132,11 @@ table {
   border-spacing: 0;
 }
 
+* {
+  font-family: 'Josefin Sans', serif !important;
+}
+
 body {
-  font-family: 'Josefin Sans', serif;
   background-color: #f4f4f9d6;
   text-align: center;
   justify-content: center;
