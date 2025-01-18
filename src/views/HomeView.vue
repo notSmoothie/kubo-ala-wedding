@@ -1,8 +1,11 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, provide, ref, defineEmits } from 'vue'
 import TimerComponent from '../components/TimerComponent.vue'
 
 const isMobile = ref(window.innerWidth <= 768)
+
+const emit = defineEmits(['updateActiveSection'])
+const activeSection = ref('')
 
 const updateDeviceWidth = () => {
   isMobile.value = window.innerWidth <= 768
@@ -10,24 +13,40 @@ const updateDeviceWidth = () => {
 
 onMounted(() => {
   window.addEventListener('resize', updateDeviceWidth)
+
+  const sections = document.querySelectorAll('.snapSection')
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          activeSection.value = entry.target.id
+          emit('updateActiveSection', activeSection.value)
+        }
+      })
+    },
+    {
+      threshold: 0.5
+    }
+  )
+
+  sections.forEach((section) => {
+    console.log(section)
+
+    observer.observe(section)
+  })
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateDeviceWidth)
 })
+
+provide('activeSection', activeSection)
 </script>
 
 <template>
   <div class="page-container">
-    <div v-if="!isMobile" class="topBar">
-      <div>Úvod</div>
-      <div>Informácie</div>
-      <div>Program</div>
-      <div>Potvrdenie účasti</div>
-      <div class="cornerStone">Alenka & Jakub</div>
-    </div>
-
-    <div class="card" style="padding-top: 0; justify-content: start">
+    <div class="card snapSection" id="top" style="padding-top: 0; justify-content: start">
       <div class="card-left">
         <img height="100vh" src="../assets/pic2.jpg" alt="Couple Photo" class="couple-photo" />
       </div>
@@ -49,7 +68,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div class="card">
+    <div class="card snapSection" id="timer">
       <div class="card-full">
         <img src="../assets/border1.png" style="height: 10vh; transform: scaleX(-1)" />
         <div style="display: flex; justify-content: center; position: relative">
@@ -59,7 +78,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div class="card" style="flex-wrap: wrap">
+    <div class="card snapSection" id="middle" style="flex-wrap: wrap">
       <h1
         :style="isMobile ? `order: -2` : ''"
         style="font-size: 3rem; padding-top: 1rem; width: 100vw"

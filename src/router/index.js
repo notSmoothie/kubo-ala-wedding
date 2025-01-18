@@ -21,7 +21,20 @@ const router = createRouter({
       name: 'about',
       component: AboutView
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      const element = document.querySelector(to.hash)
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+        return
+      }
+    }
+    return savedPosition || { top: 0 }
+  }
 })
 
 export default router
