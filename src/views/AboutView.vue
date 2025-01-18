@@ -23,7 +23,7 @@ const handleSubmit = async () => {
     console.log('RSVP submitted with ID:', docRef)
 
     alert('RSVP submitted successfully!')
-    formData.value = {} // Clear the form
+    formData.value = {}
   } catch (error) {
     console.error('Error submitting RSVP:', error)
     alert('There was an error submitting your RSVP.')
