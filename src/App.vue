@@ -54,7 +54,7 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   backdrop-filter: blur(5px);
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #00000033;
 }
 
 a {
