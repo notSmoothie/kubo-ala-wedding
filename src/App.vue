@@ -32,13 +32,9 @@ onUnmounted(() => {
     <router-link :to="{ path: '/test', hash: '#middle' }">
       <div :class="{ active: activeSection === 'middle' }">Informácie</div>
     </router-link>
-    <router-link :to="{ path: '/test', hash: '#bottom' }">
-      <div style="color: darkgray">Program</div>
-    </router-link>
+    <div style="color: darkgray">Program</div>
     <router-link to="/about">
-      <div style="background-color: rgba(70, 0, 139, 0.5); color: black; font-weight: bolder">
-        Potvrdenie účasti
-      </div>
+      <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
     </router-link>
     <div class="cornerStone">Alenka & Jakub</div>
   </div>
@@ -54,7 +50,7 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   backdrop-filter: blur(5px);
-  background-color: #00000033;
+  background-color: #ffffff25;
 }
 
 a {

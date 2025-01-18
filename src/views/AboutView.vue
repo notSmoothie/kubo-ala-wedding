@@ -1,7 +1,9 @@
 <script setup>
-import { reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { db } from '../firebase'
 import { collection, addDoc } from 'firebase/firestore'
+
+const emit = defineEmits(['updateActiveSection'])
 
 const formData = reactive({
   name: '',
@@ -15,6 +17,10 @@ const formData = reactive({
   },
   allergy: '',
   alcoholPreference: 'none'
+})
+
+onMounted(() => {
+  emit('updateActiveSection', 'rsvp')
 })
 
 const handleSubmit = async () => {
