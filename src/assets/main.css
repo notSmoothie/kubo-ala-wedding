@@ -3,52 +3,133 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 body {
-  font-family: "Josefin Sans", serif;
+  font-family: 'Josefin Sans', serif;
   background-color: #f4f4f9d6;
   text-align: center;
   justify-content: center;
@@ -56,32 +137,32 @@ body {
   height: 98vh;
 }
 
-.topBar{
+.topBar {
   z-index: 5;
   display: flex;
   position: fixed;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   padding: 25px 0;
   width: 100%;
   backdrop-filter: blur(5px);
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.topBar > div{
+.topBar > div {
   margin: 0 15px;
-  color:black
+  color: black;
 }
 
-.cornerStone{
+.cornerStone {
   margin-left: auto !important;
   font-weight: bold;
 }
 
 .heading {
-  font-family: "Josefin Sans", serif;
+  font-family: 'Josefin Sans', serif;
   font-weight: 100;
-  font-size: 3vw;
+  font-size: 3rem;
 }
 
 .container {
@@ -91,14 +172,25 @@ body {
   width: 100%;
 }
 
+.page-container {
+  height: 100vh;
+  scroll-behavior: smooth !important;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
 .card {
   overflow: hidden;
   display: flex;
   max-width: 100%;
+  height: 100vh;
+  align-content: space-around;
+  scroll-snap-align: start;
 }
 
 .card-left {
-  width: 50%;
+  width: 48%;
+  align-content: center;
 }
 
 .couple-photo {
@@ -107,47 +199,50 @@ body {
   object-fit: cover;
 }
 
-.invitationDate{
+.invitationDate {
   font-size: larger;
 }
 
-.card-left:hover .colorPatch{
-  margin:10px !important;
-  color: black !important
+.card-left:hover .colorPatch {
+  margin: 10px !important;
+  color: black !important;
 }
 
-.colorPatch{
+.colorPatch {
   transition: all 0.5s linear;
-  width: 100px; height: 100px; border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: transparent;
 }
 
-.cardContent{
+.cardContent {
   width: 100%;
   height: 100%;
   align-content: center;
 }
 
-.subheading{
+.subheading {
   font-size: x-large;
   padding-bottom: 1rem;
 }
 
-.contentWrap{
+.contentWrap {
   padding: 0 20%;
 }
 
 .card-full {
   opacity: 0.8;
   width: 100%;
-  padding: 20px
+  align-content: center;
+  padding: 20px;
 }
 
 .card-right {
-  width: 50%;
+  width: 48%;
   opacity: 0.8;
   backdrop-filter: blur(3px);
   display: flex;
@@ -181,9 +276,37 @@ h1 {
   color: white;
 }
 
+.invitationDate {
+  margin-bottom: 2rem;
+}
+
 @media (max-width: 768px) {
+  .invitationDate {
+    margin-bottom: 1rem;
+  }
+
+  .couple-photo {
+    max-height: 40vh;
+  }
+
+  .colorPatchMobile {
+    transition: all 0.5s linear;
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
   .card {
     flex-direction: column;
+    justify-content: space-around;
   }
 
   .card-left,
@@ -191,11 +314,19 @@ h1 {
     width: 100%;
   }
 
-  .card-right,.card-left,.card-full {
+  .card-left:first-child,
+  .card-right:first-child {
+    width: 100%;
+    margin-bottom: 2vh;
+  }
+
+  .card-right,
+  .card-left,
+  .card-full {
     padding: 0;
   }
 
-  .contentWrap{
-    padding: 10px
+  .contentWrap {
+    padding: 20px;
   }
 }

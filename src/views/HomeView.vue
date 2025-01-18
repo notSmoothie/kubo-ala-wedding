@@ -1,120 +1,230 @@
 <script setup>
-import TimerComponent from '../components/TimerComponent.vue';
+import { onMounted, onUnmounted, ref } from 'vue'
+import TimerComponent from '../components/TimerComponent.vue'
+
+const isMobile = ref(window.innerWidth <= 768)
+
+const updateDeviceWidth = () => {
+  isMobile.value = window.innerWidth <= 768
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateDeviceWidth)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateDeviceWidth)
+})
 </script>
 
 <template>
-  <div class="topBar">
+  <div class="page-container">
+    <div v-if="!isMobile" class="topBar">
       <div>Úvod</div>
       <div>Informácie</div>
       <div>Program</div>
       <div>Potvrdenie účasti</div>
       <div class="cornerStone">Alenka & Jakub</div>
     </div>
-    <div class="card">
+
+    <div class="card" style="padding-top: 0; justify-content: start">
       <div class="card-left">
         <img height="100vh" src="../assets/pic2.jpg" alt="Couple Photo" class="couple-photo" />
       </div>
       <div class="card-right">
         <div class="cardContent">
           <div class="contentWrap">
-            <div class="invitationDate" style="margin-bottom: 4rem;">25.4.2025</div>
-          <h1 class="heading">Príďte s nami osláviť náš veľký deň</h1>
+            <div class="invitationDate">25.4.2025</div>
+            <h1 class="heading">Príďte s nami osláviť náš veľký deň</h1>
 
-          <p class="invitation-text">
-            <br />
-            S radosťou Vás vítame na tomto mieste, kde budeme zdieľať všetky potrebné informácie a pripravovať Vás na náš nezabudnuteľný deň. <br/> <br/>Veríme, že spoločne vytvoríme deň, ktorý bude plný lásky, smiechu a nezabudnuteľných momentov.<br/>
-          </p>
-        </div>
-        </div>
-      </div>
-    </div>
-    
-    <div style="display: flex; justify-content: center; position: relative;">
-      <img style="position: absolute; height: 25vh; left:0; transform: scale(-1,1);" src="../assets/flipborder.png">
-      <TimerComponent style="margin: 20vh 0"></TimerComponent>
-      <img style="position: absolute; height: 25vh; bottom:0;right:0; transform: scale(1,-1);" src="../assets/flipborder.png">
-    </div>
-    <h1>Užitočné informácie</h1>
-
-    <div class="card" style="height: 50vh;">
-      <div class="card-left">
-       <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%;">
-        <div style="display: flex; flex-direction: row; justify-content: center;">
-          <div class="colorPatch" style="background-color: #FFFFFF;">Biela</div>
-          <div class="colorPatch" style="background-color: #F2E2C9; margin-left: -40px">Krémová</div>
-          <div class="colorPatch" style="background-color: #CF9FFF; margin-left: -40px">Fialová</div>
-          <div class="colorPatch" style="background-color: #CEC2EB; margin-left: -40px">Fialová 2</div>
-        </div>
-       </div>
-      </div>
-      <div class="card-right">
-        <div class="cardContent">
-          <div class="contentWrap">
-          <div class="subheading">
-            Svadobné farby
+            <p class="invitation-text">
+              <br />
+              S radosťou Vás vítame na tomto mieste, kde budeme zdieľať všetky potrebné informácie a
+              pripravovať Vás na náš nezabudnuteľný deň. <br />
+              <br />Veríme, že spoločne vytvoríme deň, ktorý bude plný lásky, smiechu a
+              nezabudnuteľných momentov.<br />
+            </p>
           </div>
-          <p>Svadba bude zladená do týchto farieb. Farby síce máme, ale dress code stanovený nie je - budeme radi ak sa budete cítiť pohodlne.</p>
-        </div>
         </div>
       </div>
-     
     </div>
-    <div class="card" style="height: 50vh;">
+
+    <div class="card">
+      <div class="card-full">
+        <img src="../assets/border1.png" style="height: 10vh; transform: scaleX(-1)" />
+        <div style="display: flex; justify-content: center; position: relative">
+          <TimerComponent style="margin: 8vh 0"></TimerComponent>
+        </div>
+        <img src="../assets/border1.png" style="height: 10vh" />
+      </div>
+    </div>
+
+    <div class="card" style="flex-wrap: wrap">
+      <h1
+        :style="isMobile ? `order: -2` : ''"
+        style="font-size: 3rem; padding-top: 1rem; width: 100vw"
+      >
+        Užitočné informácie
+      </h1>
+
+      <div class="card-left">
+        <div
+          v-if="!isMobile"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100%;
+          "
+        >
+          <div style="display: flex; flex-direction: row">
+            <div class="colorPatch" style="background-color: #ffffff">Biela</div>
+            <div class="colorPatch" style="background-color: #f2e2c9; margin-left: -40px">
+              Krémová
+            </div>
+            <div class="colorPatch" style="background-color: #cf9fff; margin-left: -40px">
+              Fialová
+            </div>
+            <div class="colorPatch" style="background-color: #cec2eb; margin-left: -40px">
+              Fialová 2
+            </div>
+          </div>
+        </div>
+        <div
+          v-else
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100%;
+          "
+        >
+          <div style="display: flex; flex-direction: column">
+            <div style="display: flex; align-items: center; justify-content: center">
+              <div class="colorPatchMobile" style="background-color: #ffffff"></div>
+              <div style="margin-left: 20px">Biela</div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                flex-direction: row-reverse;
+                justify-content: center;
+                margin-top: -10%;
+              "
+            >
+              <div class="colorPatchMobile" style="background-color: #f2e2c9"></div>
+              <div style="margin-right: 20px">Krémová</div>
+            </div>
+            <div style="display: flex; align-items: center; margin-top: -10%">
+              <div
+                class="colorPatchMobile"
+                style="background-color: #cf9fff; justify-content: center"
+              ></div>
+              <div style="margin-left: 20px">Fialová</div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                flex-direction: row-reverse;
+                justify-content: center;
+                margin-top: -10%;
+              "
+            >
+              <div class="colorPatchMobile" style="background-color: #cec2eb"></div>
+              <div style="margin-right: 20px">Fialová 2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-right" :style="isMobile ? `order: -1` : ''">
+        <div class="cardContent">
+          <div class="contentWrap">
+            <div class="subheading">Svadobné farby</div>
+            <p>
+              Svadba bude zladená do týchto farieb. Farby síce máme, ale dress code stanovený nie je
+              - budeme radi ak sa budete cítiť pohodlne.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
       <div class="card-right">
         <div class="cardContent">
           <div class="contentWrap">
-         <div class="subheading">
-            Svadobné dary
+            <div class="subheading">Svadobné dary</div>
+            <p style="margin-bottom: 20px">
+              Najväčším darom pre nás bude, ak tento deň strávite s nami, a užijete si ho. Pokiaľ by
+              ste nás aj napriek tomu radi obdarovali, na mieste bude krabička na obálky.
+            </p>
+            <p>
+              Nerobte si starosti k kyticami, nevestu najviac poteší 1 červená ružička od každého
+              hosťa.
+            </p>
           </div>
-          <p style="margin-bottom: 20px;">Najväčším darom pre nás bude, ak tento deň strávite s nami, a užijete si ho. Pokiaľ by ste nás aj napriek tomu radi obdarovali, na mieste bude krabička na obálky.</p>
-          <p>Nerobte si starosti k kyticami, nevestu najviac poteší 1 červená ružička od každého hosťa. </p>
-        </div>
         </div>
       </div>
       <div class="card-left">
-       <img style=" height: 100%; width: auto;" src="../assets/cute.png">
+        <img
+          style="padding: 20px"
+          :style="isMobile ? `width: 80%` : `width: 50%`"
+          src="../assets/cute.png"
+        />
       </div>
-     
-     
     </div>
-    <div class="card" style="height: 50vh;">
-      <div class="card-left" style="text-align: left;">
-       <img style="width: 100%;" src="../assets/dolina2.jpg">
+    <div class="card">
+      <div class="card-left" style="text-align: left">
+        <img style="width: 100%" src="../assets/dolina2.jpg" />
       </div>
-      <div class="card-right">
+      <div class="card-right" :style="isMobile ? `order: -1` : ''">
         <div class="cardContent">
           <div class="contentWrap">
-          <div class="subheading">
-            Ubytovanie
-</div>
-          <p>V penzióne sú k dispozícií 2-lôžkové izby s kapacitou 50 osôb. Ubytovanie Vám veľmi radi rezervujeme (stačí uviesť vo formulári). V cene ubytovania sú aj raňajky. </p>
-        </div>
+            <div class="subheading">Ubytovanie</div>
+            <p>
+              V penzióne sú k dispozícií 2-lôžkové izby s kapacitou 50 osôb. Ubytovanie Vám veľmi
+              radi rezervujeme (stačí uviesť vo formulári). V cene ubytovania sú aj raňajky.
+            </p>
+          </div>
         </div>
       </div>
-     
     </div>
 
-    <div class="card" style="height: 50vh;">
-      <div class="card-full" >
+    <div class="card" style="height: 50vh">
+      <div class="card-full">
         <div class="cardContent">
           <div class="contentWrap">
-          <div class="subheading">
-            Miesto svadby
-</div>
-          
-          <p>Svoje áno si povieme v krásnom penzióne Dolina v obci Horné Lefantovce o 15:00.				
-Celý areál bude v deň svadby uzavretý, takže ste vítaní kedykoľvek od 10:00.				
-Parkovacích miest je dostatok. V prípade potreby veľmi radi zabezpečíme dopravu na a zo svadby. 				
-Koniec svadby je otvorený, takže času na zábavu bude dostatok. </p>
-        </div>
+            <div class="subheading">Miesto svadby</div>
+
+            <p>
+              Svoje áno si povieme v krásnom penzióne Dolina v obci Horné Lefantovce o 15:00. Celý
+              areál bude v deň svadby uzavretý, takže ste vítaní kedykoľvek od 10:00. Parkovacích
+              miest je dostatok. V prípade potreby veľmi radi zabezpečíme dopravu na a zo svadby.
+              Koniec svadby je otvorený, takže času na zábavu bude dostatok.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card" style="height: 30vh;">
-    <div class="card-full">
-        <div style="width: 100%; height: 100%;"><iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Dolina,%20Lie%C4%8Debn%C3%BD%20%C3%BAstav,%20951%2045%20Horn%C3%A9%20Lefantovce,%20Slovensko+(Penzi%C3%B3n%20Dolina)&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe></div>
+    <div class="card" style="height: 50vh">
+      <div class="card-full">
+        <div style="width: 100%; height: 50vh">
+          <iframe
+            width="100%"
+            height="100%"
+            frameborder="0"
+            scrolling="no"
+            marginheight="0"
+            marginwidth="0"
+            src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Dolina,%20Lie%C4%8Debn%C3%BD%20%C3%BAstav,%20951%2045%20Horn%C3%A9%20Lefantovce,%20Slovensko+(Penzi%C3%B3n%20Dolina)&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+          ></iframe>
+        </div>
       </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
