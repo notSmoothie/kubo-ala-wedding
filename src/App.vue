@@ -29,18 +29,18 @@ onUnmounted(() => {
 <template>
   <div>
     <!-- Desktop TopBar -->
-    <div v-if="!isMobile && $route.path !== '/'" class="topBar">
-      <router-link :to="{ path: '/test', hash: '#top' }">
+    <div v-if="!isMobile" class="topBar">
+      <router-link :to="{ path: '/', hash: '#top' }">
         <div :class="{ active: activeSection === 'top' }">Úvod</div>
       </router-link>
-      <router-link :to="{ path: '/test', hash: '#timer' }">
+      <router-link :to="{ path: '/', hash: '#timer' }">
         <div :class="{ active: activeSection === 'timer' }">Čas</div>
       </router-link>
-      <router-link :to="{ path: '/test', hash: '#middle' }">
+      <router-link :to="{ path: '/', hash: '#middle' }">
         <div :class="{ active: activeSection === 'middle' }">Informácie</div>
       </router-link>
       <div style="color: darkgray">Program</div>
-      <router-link to="/about">
+      <router-link to="/rsvp">
         <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
       </router-link>
       <div class="cornerStone">Alenka & Jakub</div>
