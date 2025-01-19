@@ -47,7 +47,7 @@ provide('activeSection', activeSection)
 <template>
   <div class="page-container">
     <div class="card snapSection" id="top" style="padding-top: 0; justify-content: start">
-      <div class="card-left">
+      <div class="card-left" style="margin-bottom: 0 !important">
         <img height="100vh" src="../assets/pic2.jpg" alt="Couple Photo" class="couple-photo" />
       </div>
       <div class="card-right">
@@ -57,7 +57,6 @@ provide('activeSection', activeSection)
             <h1 class="heading">Príďte s nami osláviť náš veľký deň</h1>
 
             <p class="invitation-text">
-              <br />
               S radosťou Vás vítame na tomto mieste, kde budeme zdieľať všetky potrebné informácie a
               pripravovať Vás na náš nezabudnuteľný deň. <br />
               <br />Veríme, že spoločne vytvoríme deň, ktorý bude plný lásky, smiechu a
@@ -106,7 +105,7 @@ provide('activeSection', activeSection)
               Fialová
             </div>
             <div class="colorPatch" style="background-color: #cec2eb; margin-left: -40px">
-              Fialová 2
+              Bledofialová
             </div>
           </div>
         </div>
@@ -154,7 +153,7 @@ provide('activeSection', activeSection)
               "
             >
               <div class="colorPatchMobile" style="background-color: #cec2eb"></div>
-              <div style="margin-right: 20px">Fialová 2</div>
+              <div style="margin-right: 20px">Bledofialová</div>
             </div>
           </div>
         </div>
@@ -164,7 +163,8 @@ provide('activeSection', activeSection)
           <div class="contentWrap">
             <div class="subheading">Svadobné farby</div>
             <p>
-              Svadba bude zladená do týchto farieb. Farby síce máme, ale dress code stanovený nie je
+              Svadba bude zladená do týchto farieb. Farby síce máme, ale
+              <b>dress code stanovený nie je</b>
               - budeme radi ak sa budete cítiť pohodlne.
             </p>
           </div>
@@ -181,8 +181,8 @@ provide('activeSection', activeSection)
               ste nás aj napriek tomu radi obdarovali, na mieste bude krabička na obálky.
             </p>
             <p>
-              Nerobte si starosti k kyticami, nevestu najviac poteší 1 červená ružička od každého
-              hosťa.
+              Nerobte si starosti k kyticami, nevestu najviac poteší <b>1 červená ružička</b> od
+              každého hosťa.
             </p>
           </div>
         </div>
@@ -204,8 +204,9 @@ provide('activeSection', activeSection)
           <div class="contentWrap">
             <div class="subheading">Ubytovanie</div>
             <p>
-              V penzióne sú k dispozícií 2-lôžkové izby s kapacitou 50 osôb. Ubytovanie Vám veľmi
-              radi rezervujeme (stačí uviesť vo formulári). V cene ubytovania sú aj raňajky.
+              V penzióne sú k dispozícií <b>2-lôžkové</b> izby s kapacitou <b>50 osôb</b>.
+              Ubytovanie Vám veľmi radi rezervujeme (stačí uviesť vo formulári). V cene ubytovania
+              sú aj raňajky.
             </p>
           </div>
         </div>
@@ -219,10 +220,10 @@ provide('activeSection', activeSection)
             <div class="subheading">Miesto svadby</div>
 
             <p>
-              Svoje áno si povieme v krásnom penzióne Dolina v obci Horné Lefantovce o 15:00. Celý
-              areál bude v deň svadby uzavretý, takže ste vítaní kedykoľvek od 10:00. Parkovacích
-              miest je dostatok. V prípade potreby veľmi radi zabezpečíme dopravu na a zo svadby.
-              Koniec svadby je otvorený, takže času na zábavu bude dostatok.
+              Svoje áno si povieme v krásnom <b>penzióne Dolina</b> v obci <b>Horné Lefantovce</b> o
+              <b>15:00</b>. Celý areál bude v deň svadby uzavretý, takže ste vítaní kedykoľvek od
+              10:00. Parkovacích miest je dostatok. V prípade potreby veľmi radi zabezpečíme dopravu
+              na a zo svadby. Koniec svadby je otvorený, takže času na zábavu bude dostatok.
             </p>
           </div>
         </div>
