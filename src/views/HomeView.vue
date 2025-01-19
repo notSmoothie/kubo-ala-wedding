@@ -53,7 +53,7 @@ provide('activeSection', activeSection)
       <div class="card-right">
         <div class="cardContent">
           <div class="contentWrap">
-            <div class="invitationDate">25.4.2025</div>
+            <div class="invitationDate">24.5.2025</div>
             <h1 class="heading">Príďte s nami osláviť náš veľký deň</h1>
 
             <p class="invitation-text">
