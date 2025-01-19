@@ -144,7 +144,8 @@ body {
 }
 
 p {
-  font-size: 1.3rem;
+  font-weight: 300;
+  font-size: 1.4rem;
 }
 
 .heading {
@@ -244,7 +245,7 @@ h1 {
 }
 
 .invitation-text {
-  font-size: 1.3em;
+  font-size: 1.4em;
   line-height: 1.5;
 }
 

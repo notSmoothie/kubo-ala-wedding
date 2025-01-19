@@ -70,6 +70,7 @@ function formatTime(milliseconds) {
 
 <style scoped>
 #timer {
+  font-weight: 300;
   font-size: 3rem;
   margin: 20px 0;
 }
