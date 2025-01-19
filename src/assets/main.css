@@ -143,6 +143,10 @@ body {
   align-items: center;
 }
 
+p {
+  font-size: 1.3rem;
+}
+
 .heading {
   font-family: 'Josefin Sans', serif;
   font-weight: 100;
@@ -240,7 +244,7 @@ h1 {
 }
 
 .invitation-text {
-  font-size: 1.2em;
+  font-size: 1.3em;
   line-height: 1.5;
 }
 

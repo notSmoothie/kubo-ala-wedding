@@ -1,19 +1,55 @@
 <script setup>
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { db } from '../firebase'
 import { collection, addDoc } from 'firebase/firestore'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const emit = defineEmits(['updateActiveSection'])
+
+const isSubmitting = ref(false)
 
 const formData = reactive({
   name: '',
   attendance: null,
   email: '',
-  accommodation: 0,
-  transport: 0,
-  foodAllergies: '',
-  alcoholPreference: 'none'
+  accommodation: null,
+  transport: null,
+  food: '',
+  alcohol: [],
+  alcoholCustom: ''
 })
+
+const formValidations = reactive({
+  name: true,
+  attendance: true,
+  accommodation: true,
+  transport: true
+})
+
+const toggleAlcohol = (option) => {
+  const index = formData.alcohol.indexOf(option)
+  if (index > -1) {
+    formData.alcohol.splice(index, 1)
+  } else {
+    formData.alcohol.push(option)
+  }
+}
+
+const validateForm = () => {
+  formValidations.name = !!formData.name
+  formValidations.attendance = formData.attendance !== null
+  formValidations.accommodation = formData.attendance === false || formData.accommodation !== null
+  formValidations.transport = formData.attendance === false || formData.transport !== null
+
+  setTimeout(() => {
+    formValidations.name = true
+    formValidations.attendance = true
+    formValidations.accommodation = true
+    formValidations.transport = true
+  }, 3000)
+}
 
 onMounted(() => {
   emit('updateActiveSection', 'rsvp')
@@ -28,15 +64,48 @@ const handleTransport = (value) => {
 }
 
 const handleSubmit = async () => {
-  try {
-    const docRef = await addDoc(collection(db, 'rsvps'), formData)
-    console.log('RSVP submitted with ID:', docRef)
+  if (isSubmitting.value) return
 
-    alert('RSVP submitted successfully!')
-    formData.value = {}
+  isSubmitting.value = true
+
+  validateForm()
+
+  if (
+    !formValidations.name ||
+    !formValidations.attendance ||
+    !formValidations.accommodation ||
+    !formValidations.transport
+  ) {
+    isSubmitting.value = false
+    return
+  }
+
+  let sendableData = { ...formData }
+
+  if (formData.attendance === false) {
+    delete sendableData.accommodation
+    delete sendableData.transport
+    delete sendableData.food
+    delete sendableData.alcohol
+  }
+
+  if (formData.alcoholCustom) {
+    const customIndex = formData.alcohol.findIndex((option) => option === 'custom')
+    if (customIndex !== -1) {
+      formData.alcohol[customIndex] = `Iné: ${formData.alcoholCustom}`
+    }
+  }
+
+  delete sendableData.alcoholCustom
+
+  sendableData.alcohol = formData.alcohol.join(', ')
+
+  try {
+    await addDoc(collection(db, 'rsvps'), sendableData)
+    router.push('/thank-you')
   } catch (error) {
     console.error('Error submitting RSVP:', error)
-    alert('There was an error submitting your RSVP.')
+    isSubmitting.value = false
   }
 }
 </script>
@@ -51,14 +120,15 @@ const handleSubmit = async () => {
           Prosíme o vyplnenie za každého hosťa samostatne.
         </p>
       </div>
-      <form @submit.prevent="handleSubmit">
+      <form style="max-width: 95%" novalidate @submit.prevent="handleSubmit">
         <div class="form-group row">
           <div class="col">
-            <label for="name">Meno</label>
+            <label for="name">Meno:</label>
             <input
               v-model="formData.name"
               type="text"
               id="name"
+              :class="{ 'input-invalid': !formValidations.name }"
               placeholder="Zadajte svoje meno"
               required
             />
@@ -66,6 +136,7 @@ const handleSubmit = async () => {
           <div class="col">
             <label for="email">Email pre novinky:</label>
             <input
+              required
               v-model="formData.email"
               type="email"
               id="email"
@@ -75,19 +146,24 @@ const handleSubmit = async () => {
         </div>
         <!-- Attendance Section -->
         <div class="form-group attendance-section">
-          <label for="attendance">Účasť:</label>
           <div class="button-group">
             <button
               type="button"
-              :class="{ active: formData.attendance === true }"
+              :class="{
+                active: formData.attendance === true,
+                'button-invalid': !formValidations.attendance
+              }"
               @click="formData.attendance = true"
               required
             >
-              Áno, rád sa zúčastním
+              Áno, vidíme sa 🫠
             </button>
             <button
               type="button"
-              :class="{ active: formData.attendance === false }"
+              :class="{
+                active: formData.attendance === false,
+                'button-invalid': !formValidations.attendance
+              }"
               @click="formData.attendance = false"
               required
             >
@@ -105,21 +181,30 @@ const handleSubmit = async () => {
               <div class="button-group">
                 <button
                   type="button"
-                  :class="{ active: formData.accommodation === 0 }"
+                  :class="{
+                    active: formData.accommodation === 0,
+                    'button-invalid': !formValidations.accommodation
+                  }"
                   @click="formData.accommodation = 0"
                 >
                   Bez ubytovania
                 </button>
                 <button
                   type="button"
-                  :class="{ active: formData.accommodation === 1 }"
+                  :class="{
+                    active: formData.accommodation === 1,
+                    'button-invalid': !formValidations.accommodation
+                  }"
                   @click="formData.accommodation = 1"
                 >
                   1 noc (piatok)
                 </button>
                 <button
                   type="button"
-                  :class="{ active: formData.accommodation === 2 }"
+                  :class="{
+                    active: formData.accommodation === 2,
+                    'button-invalid': !formValidations.accommodation
+                  }"
                   @click="formData.accommodation = 2"
                 >
                   2 noci (piatok aj sobota)
@@ -133,7 +218,10 @@ const handleSubmit = async () => {
             <div class="button-group">
               <button
                 type="button"
-                :class="{ active: formData.transport === 0 }"
+                :class="{
+                  active: formData.transport === 0,
+                  'button-invalid': !formValidations.accommodation
+                }"
                 @click="handleTransport(0)"
               >
                 Vlastná doprava
@@ -141,20 +229,22 @@ const handleSubmit = async () => {
               <button
                 type="button"
                 :class="{
-                  active: formData.transport === 1 || formData.transport === 3
+                  active: formData.transport === 1 || formData.transport === 3,
+                  'button-invalid': !formValidations.accommodation
                 }"
                 @click="handleTransport(1)"
               >
-                Potrebujem doviezť na svadbu
+                Chcem doviezť na svadbu
               </button>
               <button
                 type="button"
                 :class="{
-                  active: formData.transport === 2 || formData.transport === 3
+                  active: formData.transport === 2 || formData.transport === 3,
+                  'button-invalid': !formValidations.accommodation
                 }"
                 @click="handleTransport(2)"
               >
-                Potrebujem odviezť zo svadby
+                Chcem odviezť zo svadby
               </button>
             </div>
           </div>
@@ -163,26 +253,161 @@ const handleSubmit = async () => {
             <div class="col">
               <label for="allergy">Jedlo:</label>
               <textarea
-                v-model="formData.allergy"
+                v-model="formData.food"
                 id="allergy"
-                placeholder="Napíšte, ak máte nejaké alergie alebo preferenice."
+                placeholder="Napíšte, ak máte nejaké alergie alebo preferencie."
               />
             </div>
-            <div class="col">
-              <label for="alcohol-preference">Alkohol:</label>
-              <select v-model="formData.alcoholPreference" id="alcohol-preference">
-                <option value="none">Žiadne</option>
-                <option value="beer">Pivo</option>
-                <option value="wine">Víno</option>
-                <option value="spirits">Liehoviny</option>
-              </select>
+            <!-- Alcohol Chips Section -->
+            <div class="form-group row">
+              <div class="col">
+                <label for="alcohol-preference">Pitie:</label>
+                <div class="chips-container">
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Abstinent'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Abstinent')"
+                  >
+                    Abstinent
+                  </button>
+                  <!-- Underage Option -->
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Pod-18'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Pod-18')"
+                  >
+                    &lt;18
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Pivo'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Pivo')"
+                  >
+                    Pivo
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Biele Víno'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Biele Víno')"
+                  >
+                    Biele Víno
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Červené Víno'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Červené Víno')"
+                  >
+                    Červené Víno
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Vodka'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Vodka')"
+                  >
+                    Vodka
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Rum'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Rum')"
+                  >
+                    Rum
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Whiskey'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Whiskey')"
+                  >
+                    Whiskey
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Gin'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Gin')"
+                  >
+                    Gin
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('Domáce'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('Domáce')"
+                  >
+                    Domáce
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      active: formData.alcohol.includes('custom'),
+                      'button-invalid': !formValidations.accommodation
+                    }"
+                    @click="toggleAlcohol('custom')"
+                  >
+                    Iné
+                  </button>
+                  <input
+                    type="text"
+                    style="margin: 0"
+                    v-if="formData.alcohol.includes('custom')"
+                    v-model="formData.alcoholCustom"
+                    placeholder="Iné..."
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <!-- Submit Button -->
-          <button type="submit" class="submit-button">ODOSLAŤ</button>
+          <button :disabled="isSubmitting" type="submit" class="submit-button">
+            <div
+              style="display: flex; align-items: center; width: 100%; justify-content: center"
+              v-if="isSubmitting"
+            >
+              <span class="spinner"></span>
+              <span>Odosielam...</span>
+            </div>
+            <span v-else>ODOSLAŤ</span>
+          </button>
         </div>
         <div v-else-if="formData.attendance === false">
-          <button type="submit" class="submit-button small">ODOSLAŤ</button>
+          <button :disabled="isSubmitting" type="submit" class="submit-button">
+            <div
+              style="display: flex; align-items: center; width: 100%; justify-content: center"
+              v-if="isSubmitting"
+            >
+              <span class="spinner"></span>
+              <span>Odosielam...</span>
+            </div>
+            <span v-else>ODOSLAŤ</span>
+          </button>
         </div>
       </form>
     </div>
@@ -191,19 +416,20 @@ const handleSubmit = async () => {
 
 <style scoped>
 .form-container {
-  max-width: 100vw;
-  padding: 40px;
+  max-width: 90vw;
+  padding: 3vh 5vw;
   background-color: #f4f4f9d6;
   justify-items: center;
   border-radius: 10px;
 }
 
 form {
-  min-width: 45vw;
+  min-width: 55vw;
 }
 
 .infotext-wrap {
   max-width: 700px;
+  padding: 10px;
   text-align: center;
 }
 
@@ -213,6 +439,10 @@ form {
   align-items: center;
   min-height: 100vh;
   overflow-y: scroll;
+}
+
+.submit-button {
+  max-width: 90vw;
 }
 
 .row {
@@ -238,8 +468,78 @@ p {
   margin-bottom: 30px;
 }
 
-.form-group {
-  margin-bottom: 20px;
+.chips-container {
+  display: flex;
+  gap: 10px;
+  max-width: calc(min(95vw, 700px));
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.chips-container button {
+  padding: 8px 15px;
+  border-radius: 16px;
+  background-color: #f4f4f9;
+  color: #2c3e50;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.chips-container button.active {
+  background-color: #d697ff99;
+  color: black;
+  border: 1px solid #e0b0ff;
+}
+
+.chips-container button:hover {
+  background-color: #d697ff;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.chips-container button:active {
+  transform: translateY(0);
+}
+
+.chips-container button:disabled {
+  background-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.chips-container button:disabled:hover {
+  background-color: #ddd;
+}
+
+.spinner {
+  border: 3px solid #ffffff; /* Light gray for the outer border */
+  border-top: 3px solid #bb54ff; /* Bright blue for the top border */
+  border-radius: 50%;
+  width: 20px; /* Increased size */
+  height: 20px; /* Increased size */
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 12px; /* Added a bit more space */
+  vertical-align: middle; /* Align the spinner with the text */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.form-group:not(:last-child) {
+  margin-bottom: 15px;
+  padding: 0 15px;
 }
 
 .attendance-section {
@@ -270,10 +570,19 @@ button {
     transform 0.3s ease;
 }
 
+.input-invalid {
+  border-color: red;
+}
+
+.button-invalid {
+  border: 1px solid red;
+  background-color: #ffcccc;
+}
+
 button.active {
   border: 1px solid #e0b0ff;
-  background-color: #d697ff;
-  color: white;
+  background-color: #d697ff99;
+  color: black;
 }
 
 button:hover {
@@ -286,23 +595,35 @@ button:active {
   transform: translateY(0);
 }
 
+button:disabled {
+  background-color: #ddd; /* Light gray to indicate disabled state */
+  color: #aaa; /* Dim the text */
+  cursor: not-allowed; /* Change cursor to show the button is not clickable */
+  box-shadow: none; /* Remove any box shadow to indicate it's inactive */
+}
+
+button:disabled:hover {
+  background-color: #ddd; /* Maintain the same background color when hovered */
+  transform: none; /* Prevent any hover effects */
+}
+
 label {
   display: block;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #2c3e50;
 }
 
 input,
 select,
 textarea {
-  width: 100%;
+  width: 95%;
   padding: 12px 5px;
   margin-top: 10px;
   margin-bottom: 20px;
   border-radius: 8px;
   border: 1px solid #ddd;
-  font-size: 1rem;
+  font-size: 1.1rem;
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
@@ -353,6 +674,38 @@ button[type='submit']:active {
 }
 
 @media (max-width: 768px) {
+  .chips-container {
+    justify-content: center;
+  }
+
+  form {
+    min-width: 100vw;
+  }
+
+  button.active:hover {
+    border: 1px solid #e0b0ff;
+    background-color: #d697ff99;
+    color: black;
+  }
+
+  button:hover {
+    background-color: unset;
+    color: unset;
+    transform: unset;
+  }
+
+  .chips-container button:hover {
+    background-color: inherit;
+    color: inherit;
+    transform: inherit;
+  }
+
+  .chips-container button.active:hover {
+    background-color: #d697ff99;
+    color: inherit;
+    transform: inherit;
+  }
+
   .row {
     flex-direction: column;
   }
