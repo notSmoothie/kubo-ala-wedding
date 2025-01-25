@@ -12,7 +12,7 @@ import { ref, onMounted } from 'vue'
 const timeLeft = ref('00:00:00')
 let worker = null
 
-const targetDate = new Date('2025-05-24T18:37:00').getTime()
+const targetDate = new Date('2025-05-24T15:00:00').getTime()
 
 onMounted(() => {
   const initialTimeLeft = targetDate - new Date().getTime()

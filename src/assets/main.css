@@ -255,16 +255,19 @@ h1 {
 
 .rsvp-button {
   display: inline-block;
-  padding: 10px 20px;
-  border: 1px solid #e0b0ff;
-  color: #e0b0ff;
+  padding: 0.5rem 1rem;
+  margin-top: 20px;
+  font-size: 1rem;
+  background: transparent;
+  border: 1px solid rgb(108, 0, 216);
+  color: rgb(108, 0, 216);
   text-decoration: none;
   border-radius: 5px;
   font-weight: bold;
 }
 
 .rsvp-button:hover {
-  background-color: #d697ff;
+  background-color: rgb(108, 0, 216);
   color: white;
 }
 
@@ -274,11 +277,12 @@ h1 {
 
 @media (max-width: 768px) {
   .invitationDate {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
   }
 
   .invitation-text {
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   p {
@@ -328,6 +332,6 @@ h1 {
   }
 
   .contentWrap {
-    padding: 20px;
+    padding: 10px;
   }
 }

@@ -61,6 +61,7 @@ provide('activeSection', activeSection)
               pripravovať Vás na náš nezabudnuteľný deň. <br />
               <br />Veríme, že spoločne vytvoríme deň, ktorý bude plný lásky, smiechu a
               nezabudnuteľných momentov.<br />
+              <router-link class="rsvp-button" to="/rsvp">Potvrdiť účasť</router-link>
             </p>
           </div>
         </div>

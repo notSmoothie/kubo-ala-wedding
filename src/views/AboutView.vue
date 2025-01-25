@@ -146,7 +146,7 @@ const handleSubmit = async () => {
         </div>
         <!-- Attendance Section -->
         <div class="form-group attendance-section">
-          <div class="button-group">
+          <div style="margin: 15px" class="button-group">
             <button
               type="button"
               :class="{
@@ -547,7 +547,6 @@ p {
 }
 
 .button-group {
-  margin-top: 10px;
   display: flex;
   justify-content: center;
   gap: 10px;
