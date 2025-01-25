@@ -56,19 +56,19 @@ exports.sendEmailOnNewDocument =
       const snap = event.data;
       const data = snap.data();
 
-      let {name, attendance, accomodation, transport, food, alcohol} = data;
+      let {name, attendance, accommodation, transport, food, alcohol} = data;
 
       const accommodationOptions = ["Nepotrebujem", "1 noc", "2 noci"];
       const transportOptions = ["Vlastná doprava", "Iba zo svadby", "Iba na svadbu", "Na svadbu aj späť"];
 
-      accomodation = sanitizeHTML(accommodationOptions[accomodation] || "Nepotrebujem");
-      transport = sanitizeHTML(transportOptions[transport] || "Vlastná doprava");
+      accommodation = accommodationOptions[accommodation] || "Nepotrebujem";
+      transport = transportOptions[transport] || "Vlastná doprava";
       food = sanitizeHTML(food || "Žiadna alergia ani preferencie");
       alcohol = sanitizeHTML(alcohol || "Žiadna preferencia");
 
       const firstName = getFirstName(name);
       console.log(`Sending email to: ${firstName}`);
-      console.log(name, attendance, accomodation, transport, food, alcohol);
+      console.log(name, attendance, accommodation, transport, food, alcohol);
 
       const attending = `<p style="font-size: 20px; line-height: 1.5; margin: 0;">
                                 Ahoj, <strong>${firstName}</strong>,
@@ -86,7 +86,7 @@ exports.sendEmailOnNewDocument =
                                             Preferencie:
                                         </p>
                                         <ul style="margin: 0;padding: 0;list-style-type: none; font-size: 20px;">
-                                            <li style="margin-bottom: 5px;"><strong>Ubytovanie: </strong>${accomodation}
+                                            <li style="margin-bottom: 5px;"><strong>Ubytovanie: </strong>${accommodation}
                                             </li>
                                             <li style="margin-bottom: 5px;"><strong>Doprava: </strong>${transport}</li>
                                             <li style="margin-bottom: 5px;"><strong>Jedlo: </strong>${food}</li>
