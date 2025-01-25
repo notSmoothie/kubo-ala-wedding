@@ -197,7 +197,7 @@ const handleSubmit = async () => {
                   }"
                   @click="formData.accommodation = 1"
                 >
-                  1 noc (piatok)
+                  1 noc (sobota)
                 </button>
                 <button
                   type="button"
