@@ -48,7 +48,7 @@ provide('activeSection', activeSection)
   <div class="page-container">
     <div class="card snapSection" id="top" style="padding-top: 0; justify-content: start">
       <div class="card-left" style="margin-bottom: 0 !important">
-        <img height="100vh" src="../assets/pic2.jpg" alt="Couple Photo" class="couple-photo" />
+        <img height="100vh" src="../assets/pic2.webp" alt="Couple Photo" class="couple-photo" />
       </div>
       <div class="card-right">
         <div class="cardContent">
@@ -70,11 +70,11 @@ provide('activeSection', activeSection)
 
     <div class="card snapSection" id="timer">
       <div class="card-full">
-        <img src="../assets/border1.png" style="height: 10vh; transform: scaleX(-1)" />
+        <img src="../assets/border1.webp" style="height: 10vh; transform: scaleX(-1)" />
         <div style="display: flex; justify-content: center; position: relative">
           <TimerComponent style="margin: 8vh 0"></TimerComponent>
         </div>
-        <img src="../assets/border1.png" style="height: 10vh" />
+        <img src="../assets/border1.webp" style="height: 10vh" />
       </div>
     </div>
 
@@ -192,13 +192,13 @@ provide('activeSection', activeSection)
         <img
           style="padding: 20px"
           :style="isMobile ? `width: 80%` : `width: 50%`"
-          src="../assets/cute.png"
+          src="../assets/cute.webp"
         />
       </div>
     </div>
     <div class="card">
       <div class="card-left" style="text-align: left">
-        <img style="width: 100%" src="../assets/dolina2.jpg" />
+        <img style="width: 100%" src="../assets/dolina2.webp" />
       </div>
       <div class="card-right" :style="isMobile ? `order: -1` : ''">
         <div class="cardContent">
