@@ -181,7 +181,7 @@ provide('activeSection', activeSection)
               ste nás aj napriek tomu radi obdarovali, na mieste bude krabička na obálky.
             </p>
             <p>
-              Nerobte si starosti k kyticami, nevestu najviac poteší <b>1 červená ružička</b> od
+              Nerobte si starosti s kyticami, nevestu najviac poteší <b>1 červená ružička</b> od
               každého hosťa.
             </p>
           </div>
