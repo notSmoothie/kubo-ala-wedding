@@ -1,9 +1,15 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, provide, ref } from 'vue'
+import { googleSignin, checkAuthState } from './firebase'
+import { setCookie } from './utils/cookie'
 
 const isMobile = ref(window.innerWidth <= 768)
 const menuOpen = ref(false)
 const activeSection = ref('')
+
+const loginData = ref(null)
+
+provide('loginData', loginData)
 
 const updateActiveSection = (section) => {
   activeSection.value = section
@@ -17,12 +23,39 @@ const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
 }
 
-onMounted(() => {
-  window.addEventListener('resize', updateDeviceWidth)
-})
-
 onUnmounted(() => {
   window.removeEventListener('resize', updateDeviceWidth)
+  window.removeEventListener('keydown', handleKeyDown)
+})
+
+const typedString = ref('')
+
+const handleKeyDown = (e) => {
+  console.log(e.key)
+
+  typedString.value += e.key
+  if (!'hudsonsoft'.startsWith(typedString.value)) {
+    window.removeEventListener('keydown', handleKeyDown)
+    return
+  }
+  if (typedString.value === 'hudsonsoft') {
+    googleSignin()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+  checkAuthState((user) => {
+    if (user) {
+      setCookie('isAuthenticated', 'true', 1)
+      loginData.value = true
+      window.removeEventListener('keydown', handleKeyDown)
+    } else {
+      loginData.value = false
+      setCookie('isAuthenticated', 'false', 1)
+    }
+  })
+  window.addEventListener('resize', updateDeviceWidth)
 })
 </script>
 
@@ -43,7 +76,10 @@ onUnmounted(() => {
       <router-link to="/rsvp">
         <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
       </router-link>
-      <div class="cornerStone">Alenka & Jakub</div>
+      <router-link v-if="loginData" to="/admin">
+        <div style="color: gold">👑</div>
+      </router-link>
+      <div @click="login" class="cornerStone">Alenka & Jakub</div>
     </div>
 
     <!-- Mobile Burger Menu -->
@@ -67,7 +103,7 @@ onUnmounted(() => {
         <router-link to="/rsvp" @click="toggleMenu">
           <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
         </router-link>
-        <div class="cornerStone">Alenka & Jakub</div>
+        <button class="cornerStone">Alenka & Jakub</button>
       </div>
     </div>
 

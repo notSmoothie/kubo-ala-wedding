@@ -5,7 +5,19 @@
  */
 
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore' // For Firestore
+
+import {
+  initializeFirestore,
+  CACHE_SIZE_UNLIMITED,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from 'firebase/firestore' // For Firestore
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged
+} from 'firebase/auth' // For Authentication
 
 const firebaseConfig = {
   apiKey: 'AIzaSyACcayU-12D-4OedO2qklXAs-NIoMsfjR4',
@@ -20,7 +32,38 @@ const firebaseConfig = {
 /** @type {FirebaseApp} */
 const app = initializeApp(firebaseConfig)
 
-/** @type {Firestore} */
-const db = getFirestore(app) // Firestore
+const auth = getAuth(app)
+const provider = new GoogleAuthProvider()
 
-export { db }
+const googleSignin = async () => {
+  return signInWithPopup(auth, provider)
+    .then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result)
+      const token = credential.accessToken
+      const user = result.user
+      return { credential, token, user }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+const checkAuthState = (callback) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      callback(user)
+    } else {
+      callback(null)
+    }
+  })
+}
+
+/** @type {Firestore} */
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+    tabManager: persistentMultipleTabManager()
+  })
+}) // Firestore
+
+export { db, googleSignin, checkAuthState }

@@ -3,7 +3,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { db } from '../firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useRouter } from 'vue-router'
-
+import { serverTimestamp } from 'firebase/firestore'
 const router = useRouter()
 
 const emit = defineEmits(['updateActiveSection'])
@@ -99,6 +99,7 @@ const handleSubmit = async () => {
   delete sendableData.alcoholCustom
 
   sendableData.alcohol = formData.alcohol.join(', ')
+  sendableData.createdAt = serverTimestamp()
 
   try {
     await addDoc(collection(db, 'rsvps'), sendableData)
