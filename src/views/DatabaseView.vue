@@ -92,6 +92,7 @@ onMounted(() => {
 
 const filteredRsvps = computed(() => {
   return rsvps.value.filter((rsvp) => {
+    if (!rsvp.name && !rsvp.email) return false
     const name = rsvp.name.toLowerCase()
     const email = rsvp.email.toLowerCase()
     const query = searchQuery.value.toLowerCase()
