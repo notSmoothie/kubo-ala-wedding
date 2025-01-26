@@ -141,7 +141,8 @@ body {
 }
 
 input,
-button {
+button,
+textarea {
   font-family: 'Josefin Sans', 'Arial', sans-serif;
 }
 

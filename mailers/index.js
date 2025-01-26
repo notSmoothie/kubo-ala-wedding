@@ -59,7 +59,7 @@ exports.sendEmailOnNewDocument =
       let {name, attendance, accommodation, transport, food, alcohol} = data;
 
       const accommodationOptions = ["Nepotrebujem", "1 noc", "2 noci"];
-      const transportOptions = ["Vlastná doprava", "Iba zo svadby", "Iba na svadbu", "Na svadbu aj späť"];
+      const transportOptions = ["Vlastná doprava", "Iba na svadbu", "Iba zo svadby", "Na svadbu aj späť"];
 
       accommodation = accommodationOptions[accommodation] || "Nepotrebujem";
       transport = transportOptions[transport] || "Vlastná doprava";

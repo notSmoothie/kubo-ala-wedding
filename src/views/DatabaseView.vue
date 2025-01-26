@@ -52,9 +52,9 @@
               <span class="rsvp-value">{{ rsvp.alcohol }}</span>
             </div>
             <!-- Food Allergies -->
-            <div v-if="rsvp.foodAllergies" class="rsvp-detail">
+            <div v-if="rsvp.food" class="rsvp-detail">
               <span class="rsvp-label"><i class="rsvp-icon fas fa-utensils"></i></span>
-              <span class="rsvp-value">{{ rsvp.foodAllergies }}</span>
+              <span class="rsvp-value">{{ rsvp.food }}</span>
             </div>
           </div>
           <div class="rsvp-card-not" v-else>

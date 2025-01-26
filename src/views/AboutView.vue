@@ -221,7 +221,7 @@ const handleSubmit = async () => {
                 type="button"
                 :class="{
                   active: formData.transport === 0,
-                  'button-invalid': !formValidations.accommodation
+                  'button-invalid': !formValidations.transport
                 }"
                 @click="handleTransport(0)"
               >
@@ -231,7 +231,7 @@ const handleSubmit = async () => {
                 type="button"
                 :class="{
                   active: formData.transport === 1 || formData.transport === 3,
-                  'button-invalid': !formValidations.accommodation
+                  'button-invalid': !formValidations.transport
                 }"
                 @click="handleTransport(1)"
               >
@@ -241,7 +241,7 @@ const handleSubmit = async () => {
                 type="button"
                 :class="{
                   active: formData.transport === 2 || formData.transport === 3,
-                  'button-invalid': !formValidations.accommodation
+                  'button-invalid': !formValidations.transport
                 }"
                 @click="handleTransport(2)"
               >
