@@ -3,6 +3,7 @@ import AboutView from '../views/AboutView.vue'
 import HomeView from '@/views/HomeView.vue'
 import ThankYou from '@/views/ThankYou.vue'
 import DatabaseView from '@/views/DatabaseView.vue'
+import ProgramView from '@/views/ProgramView.vue'
 
 import { getCookie } from '@/utils/cookie'
 
@@ -23,6 +24,11 @@ const router = createRouter({
       path: '/thank-you',
       name: 'ThankYou',
       component: ThankYou
+    },
+    {
+      path: '/program',
+      name: 'program',
+      component: ProgramView
     },
     {
       path: '/admin',

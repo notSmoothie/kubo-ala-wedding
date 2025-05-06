@@ -126,7 +126,7 @@ exports.sendEmailOnNewDocument =
                 <table class="container" bgcolor="#ffffff" style="border-spacing: 0;border-collapse: collapse;width: 100%;max-width: 600px;margin: 0 auto;background-color: #ffffff;border-radius: 10px;">
                     <tr>
                         <td align="center" class="header">
-                            <img src="https://i.ibb.co/5Yd8g11/path3.png" alt="Logo" style="display: block;max-width: 100%;height: auto;width: 100px;margin: 20px auto;">
+                            <img src="https://i.postimg.cc/MGfYf0pT/path3.png" alt="Logo" style="display: block;max-width: 100%;height: auto;width: 100px;margin: 20px auto;">
                         </td>
                     </tr>
 

@@ -30,3 +30,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+indexxx.js
+test.html

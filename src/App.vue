@@ -72,7 +72,9 @@ onMounted(() => {
       <router-link :to="{ path: '/', hash: '#middle' }">
         <div :class="{ active: activeSection === 'middle' }">Informácie</div>
       </router-link>
-      <div style="color: darkgray">Program</div>
+      <router-link to="/program">
+        <div :class="{ active: activeSection === 'program' }">Program</div>
+      </router-link>
       <router-link to="/rsvp">
         <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
       </router-link>
@@ -99,11 +101,13 @@ onMounted(() => {
         <router-link :to="{ path: '/', hash: '#middle' }" @click="toggleMenu">
           <div :class="{ active: activeSection === 'middle' }">Informácie</div>
         </router-link>
-        <div style="color: darkgray">Program</div>
+        <router-link to="/program" @click="toggleMenu">
+          <div :class="{ active: activeSection === 'program' }">Program</div>
+        </router-link>
         <router-link to="/rsvp" @click="toggleMenu">
           <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
         </router-link>
-        <button class="cornerStone">Alenka & Jakub</button>
+        <div class="cornerStone">Alenka & Jakub</div>
       </div>
     </div>
 
