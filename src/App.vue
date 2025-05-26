@@ -75,9 +75,6 @@ onMounted(() => {
       <router-link to="/program">
         <div :class="{ active: activeSection === 'program' }">Program</div>
       </router-link>
-      <router-link to="/rsvp">
-        <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
-      </router-link>
       <router-link v-if="loginData" to="/admin">
         <div style="color: gold">👑</div>
       </router-link>
@@ -103,9 +100,6 @@ onMounted(() => {
         </router-link>
         <router-link to="/program" @click="toggleMenu">
           <div :class="{ active: activeSection === 'program' }">Program</div>
-        </router-link>
-        <router-link to="/rsvp" @click="toggleMenu">
-          <div :class="{ active: activeSection === 'rsvp' }">Potvrdenie účasti</div>
         </router-link>
         <div class="cornerStone">Alenka & Jakub</div>
       </div>

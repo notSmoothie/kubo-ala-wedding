@@ -48,20 +48,19 @@ provide('activeSection', activeSection)
   <div class="page-container">
     <div class="card snapSection" id="top" style="padding-top: 0; justify-content: start">
       <div class="card-left" style="margin-bottom: 0 !important">
-        <img height="100vh" src="../assets/pic2.webp" alt="Couple Photo" class="couple-photo" />
+        <img height="100vh" src="../assets/pic4.webp" alt="Couple Photo" class="couple-photo" />
       </div>
       <div class="card-right">
         <div class="cardContent">
           <div class="contentWrap">
             <div class="invitationDate">24.5.2025</div>
-            <h1 class="heading">Príďte s nami osláviť náš veľký deň</h1>
+            <h1 class="heading">Ďakujeme ❤️</h1>
 
             <p class="invitation-text">
-              S radosťou Vás vítame na tomto mieste, kde budeme zdieľať všetky potrebné informácie a
-              pripravovať Vás na náš nezabudnuteľný deň. <br />
-              <br />Veríme, že spoločne vytvoríme deň, ktorý bude plný lásky, smiechu a
-              nezabudnuteľných momentov.<br />
-              <router-link class="rsvp-button" to="/rsvp">Potvrdiť účasť</router-link>
+              S radosťou Vás vítame na tomto mieste, kde by sme sa s Vami chceli podeliť o spomienky
+              a zážitky z nášho veľkého dňa. <br />
+              <br />Ďakujeme, že ste boli súčasťou chvíľ plných lásky, smiechu a nezabudnuteľných
+              momentov.<br />
             </p>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AboutView from '../views/AboutView.vue'
 import HomeView from '@/views/HomeView.vue'
 import ThankYou from '@/views/ThankYou.vue'
 import DatabaseView from '@/views/DatabaseView.vue'
@@ -14,11 +13,6 @@ const router = createRouter({
       path: '/',
       name: 'main',
       component: HomeView
-    },
-    {
-      path: '/rsvp',
-      name: 'rsvp',
-      component: AboutView
     },
     {
       path: '/thank-you',
