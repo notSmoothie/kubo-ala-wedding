@@ -20,7 +20,7 @@ import {
 } from 'firebase/auth' // For Authentication
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyACcayU-12D-4OedO2qklXAs-NIoMsfjR4',
+  apiKey: 'AIzaSyA3OoyNCfu5_Who8iK_GUDwawCrPHE3Dls',
   authDomain: 'alenkajakub-f56f1.firebaseapp.com',
   databaseURL: 'https://alenkajakub-f56f1-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'alenkajakub-f56f1',
